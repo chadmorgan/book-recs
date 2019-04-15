@@ -13,14 +13,21 @@ def img_from_goodreads(goodreads_book_id):
     return img_url
 
 
-def get_book_img(goodreads_book_id,img_url):
+def get_book_img(goodreads_book_id,img_url,resize=False):
     """Get book image from assets URL or by parsing Goodreads html"""
     if img_url:
         if "nophoto" in set(img_url.split("/")):
             img_url = img_from_goodreads(goodreads_book_id)
+        else:
+            response = requests.get(img_url)
+            img = Image.open(BytesIO(response.content))
     else:
         img_url = img_from_goodreads(goodreads_book_id)
+        response = requests.get(img_url)
+        img = Image.open(BytesIO(response.content))
     response = requests.get(img_url)
     img = Image.open(BytesIO(response.content))
+    if resize:
+        if img.size != (98, 146)
+        img = img.resize((98, 146))
     return(img)
- 
